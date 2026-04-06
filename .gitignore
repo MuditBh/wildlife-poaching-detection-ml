@@ -1,0 +1,5 @@
+.venv/
+*.pt
+alerts/
+events.csv
+__pycache__/
