@@ -14,7 +14,7 @@ from ultralytics import YOLO
 # ============================================================
 
 # -------------------- CONFIG --------------------------------
-INPUT_SOURCE = 0          # 0 = webcam | r"C:\path\to\video.mp4"
+INPUT_SOURCE = 1          # 0 = webcam | r"C:\path\to\video.mp4"
 LOOP_VIDEO   = False      # Repeat video file when it ends
 MODEL        = "yolov8n.pt"
 
@@ -269,7 +269,7 @@ def run_file_mode(model):
 
 def run_webcam_mode(model):
     """Process live webcam feed using a background capture thread."""
-    cap = cv2.VideoCapture(int(INPUT_SOURCE), cv2.CAP_DSHOW)
+    cap = cv2.VideoCapture(int(INPUT_SOURCE), cv2.CAP_MSMF)
     if not cap.isOpened():
         log.error("Webcam not accessible (source=%s)", INPUT_SOURCE)
         return

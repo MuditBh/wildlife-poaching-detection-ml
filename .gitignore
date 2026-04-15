@@ -1,5 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
 .venv/
+
+# YOLO model (large file)
 *.pt
+
+# Output files
 alerts/
 events.csv
-__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db

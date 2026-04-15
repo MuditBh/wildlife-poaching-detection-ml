@@ -1,6 +1,6 @@
 # test_video_read.py
 import cv2, os, time
-PATH = r"C:\Users\ACER\Videos\Captures\sample.mp4"   # change if needed
+PATH = r"C:\Users\MUDIT BHARDWAJ\Videos\sample.mp4"   # change if needed
 
 print("Exists:", os.path.exists(PATH))
 cap = cv2.VideoCapture(PATH)   # don't force CAP_DSHOW for files
