@@ -1,152 +1,136 @@
 # 🦁 Wildlife Poaching Detection System
 
-A real-time AI-powered surveillance system that detects potential poaching activity by identifying **persons carrying weapons** in live webcam feeds or recorded video footage.
+An AI-powered surveillance system that detects potential wildlife poaching activity by identifying humans carrying weapons in real-time video or webcam feeds.
 
-Built with **YOLOv8** (Ultralytics) and **OpenCV**.
-
----
-
-## 🎯 How It Works
-
-1. Each frame is analyzed by YOLOv8 to detect `person` and weapon classes (`knife`, `gun`, `pistol`, `rifle`, `scissors`)
-2. If a weapon is detected **near or overlapping** a person, an alert is triggered
-3. The alert requires **3 consecutive confirmations** (configurable) to avoid false positives
-4. Confirmed alerts are **saved as images** and **logged to CSV**
+This project uses YOLOv8 for object detection and applies custom logic to trigger alerts when a weapon is detected near a person.
 
 ---
 
-## 📸 Demo
+## 🚀 Features
 
-| Normal Frame | Alert Triggered |
-|---|---|
-| Green box = Person | Red box = Weapon |
-| No warning shown | `🚨 ALERT: Weapon near person!` |
+- 🎥 Real-time detection using webcam or video
+- 🧠 AI-based object detection using YOLOv8
+- 🔫 Detects weapons like knife, gun, pistol, rifle, etc.
+- 🚨 Smart alert system (weapon near person)
+- 📸 Saves alert frames as evidence
+- 📝 Logs events into CSV file
+- ⚡ Optimized for CPU performance
 
 ---
 
-## 🚀 Quick Start
+## 🛠️ Tech Stack
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/YOUR_USERNAME/poach-demo.git
-cd poach-demo
-```
+- Python
+- OpenCV
+- YOLOv8 (Ultralytics)
+- NumPy
+
+---
+
+## 📂 Project Structure
+
+wildlife-poaching-detection-ml/
+│
+├── detect.py              # Main detection script
+├── yolov8n.pt            # YOLO model (auto-download recommended)
+├── alerts/               # Saved alert images
+├── events.csv            # Detection logs
+├── README.md
+└── .venv/
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the repository
+git clone https://github.com/MuditBh/wildlife-poaching-detection-ml.git  
+cd wildlife-poaching-detection-ml
+
+---
 
 ### 2. Create virtual environment
-```bash
-python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # Linux/Mac
-```
+python -m venv .venv  
+.venv\Scripts\activate  
+
+---
 
 ### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-> Skip this if you already have the packages installed.
-```
-
-### 4. Download YOLOv8 model
-```bash
-# Automatically downloaded on first run, or manually:
-python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
-```
-
-### 5. Run
-```bash
-python detect.py
-```
-
-Press **`Q`** to quit the window.
+pip install ultralytics opencv-python  
 
 ---
 
-## ⚙️ Configuration
+### 4. Run the project
+python detect.py  
 
-Edit the `CONFIG` block at the top of `detect.py`:
+---
 
-| Variable | Default | Description |
-|---|---|---|
-| `INPUT_SOURCE` | `0` | `0` = webcam, or path to video file |
-| `LOOP_VIDEO` | `False` | Repeat video file when finished |
-| `MODEL` | `yolov8n.pt` | YOLOv8 model variant |
-| `CONF_THRESH` | `0.12` | Minimum detection confidence |
-| `NEAR_PIX` | `120` | Max pixel distance weapon↔person |
-| `ALERT_PERSIST` | `3` | Frames needed to confirm alert |
-| `ALERT_COOLDOWN_SECONDS` | `5` | Seconds between alerts |
-| `SAVE_ALERT_FRAMES` | `True` | Save alert images to disk |
-| `TARGET_INFER_FPS` | `4.0` | Inference rate (CPU-friendly) |
+## 🎥 Camera Setup (Important)
 
-### Using a video file:
+If the webcam is not working or shows an error like:
+
+Webcam not accessible (source=0)
+
+This usually means the default camera index is incorrect.
+
+### 🔧 Fix
+
+Try changing the camera index in `detect.py`:
+
 ```python
-INPUT_SOURCE = r"C:\path\to\video.mp4"
-LOOP_VIDEO   = True
-```
-
----
-
-## 📁 Project Structure
+INPUT_SOURCE = 1 or INPUT_SOURCE = 2
 
 ```
-poach-demo/
-├── detect.py          # Main detection script
-├── requirements.txt   # Python dependencies
-├── README.md
-├── .gitignore
-└── alerts/            # Auto-created: saved alert frames & crops
-    ├── alert_42_20240101_120000.jpg
-    └── crop_42_20240101_120000.jpg
-events.csv             # Auto-created: alert log
-```
 
----
-
-## 📊 Alert Log (events.csv)
-
-Each confirmed alert is logged with:
-
-| Column | Description |
-|---|---|
-| `readable_time` | Human-readable timestamp |
-| `unix_time` | Unix timestamp |
-| `frame_id` | Frame number |
-| `person_conf` | Person detection confidence |
-| `weapon_conf` | Weapon detection confidence |
-| `frame_file` | Path to saved alert frame |
-| `crop_file` | Path to weapon crop image |
-
----
-
-## 🧠 Model
-
-Uses **YOLOv8n** (nano) by default — fast enough for real-time on CPU.
-
-For better accuracy, switch to a larger model:
+### Find correct camera index
 ```python
-MODEL = "yolov8s.pt"   # small
-MODEL = "yolov8m.pt"   # medium
+for i in range(5):
+    cap = cv2.VideoCapture(i)
+    print(f"Index {i}:", cap.isOpened())
+    cap.release()
+
 ```
 
-> **Note:** `yolov8n.pt` is auto-downloaded by Ultralytics and is excluded from this repo via `.gitignore` due to file size.
+## 🎯 How it works
+
+- YOLOv8 detects objects in each frame  
+- Filters persons and weapons  
+- Calculates distance between them  
+- If a weapon is close to a person → alert triggered  
+- Saves frame and logs event  
 
 ---
 
-## 📦 Requirements
+## 📸 Output
 
-- Python 3.8+
-- Webcam or video file
-- No GPU required (CPU inference supported)
+- Bounding boxes on detected objects  
+- Alert message on screen  
+- Saved evidence in alerts/  
+- Logs stored in events.csv  
+
+---
+
+## ⚠️ Note
+
+- Webcam may not work on some systems due to permissions  
+- For best results, use a video file as input  
+
+---
+
+## 🔮 Future Improvements
+
+- Custom-trained weapon detection model  
+- Email/SMS alert system  
+- Web dashboard integration  
+- Deployment on edge devices (Raspberry Pi / CCTV)  
 
 ---
 
 ## 👨‍💻 Author
 
-**Naman Goel**  
-B.Tech CSE | GNIOT, Greater Noida  
-[GitHub](https://github.com/YOUR_USERNAME)
+Mudit Bhardwaj  
 
 ---
 
-## 📄 License
+## ⭐ Support
 
-MIT License — free to use and modify.
+If you like this project, consider giving it a star ⭐ on GitHub!
