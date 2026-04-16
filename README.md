@@ -43,26 +43,29 @@ wildlife-poaching-detection-ml/
 ## ⚙️ Setup Instructions
 
 ### 1. Clone the repository
+```bash
 git clone https://github.com/MuditBh/wildlife-poaching-detection-ml.git  
 cd wildlife-poaching-detection-ml
-
----
+```
 
 ### 2. Create virtual environment
+```bash
 python -m venv .venv  
-.venv\Scripts\activate  
+.venv\Scripts\activate
+```
 
----
 
 ### 3. Install dependencies
-pip install ultralytics opencv-python  
-
----
+```bash
+pip install ultralytics opencv-python
+```
 
 ### 4. Run the project
+```bash
 python detect.py  
 
----
+
+```
 
 ## 🎥 Camera Setup (Important)
 
